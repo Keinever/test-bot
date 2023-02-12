@@ -1,14 +1,22 @@
-from dataclasses import dataclass
-from typing import *
+from aiogram import Bot, Dispatcher
+from aiogram.filters import Command
+from aiogram.types import Message
+from config import bot_token
 
-@dataclass
-class DbConfig:
-    pswd : Optional[int]
-    name : Union[str, int]
+bot: Bot = Bot(token=bot_token)
+dp: Dispatcher = Dispatcher()
 
 
-db = DbConfig(
-    pswd=23424234234,
-    name="dbBot"
-    )
-print(db.name)
+@dp.message(Command(commands=["start"]))
+async def start_of_bot(message: Message):
+    await message.answer("Привет я твой личный помощник, меня зовут Woppy.\
+                        Пиши не стесняйся")
+
+
+@dp.message(Command(commands=["help"]))
+async def help_for_user(message: Message):
+    await message.answer("Пиши не стесняйся, помогу чем смогу!")
+
+
+if __name__ == '__main__':
+    dp.run_polling(bot)
